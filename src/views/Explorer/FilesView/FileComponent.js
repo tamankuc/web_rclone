@@ -12,6 +12,7 @@ import {PROP_ITEM} from "../../../utils/RclonePropTypes";
 import ErrorBoundary from "../../../ErrorHandling/ErrorBoundary";
 import FileActions from "./FileActions";
 import FileIcon from "./FileIcon";
+import NewMountModal from "../../MountDashboard/NewMountModal";
 
 async function performCopyMoveOperation(params) {
     const {srcRemoteName, srcRemotePath, destRemoteName, destRemotePath, Name, IsDir, dropEffect, updateHandler} = params;
@@ -52,12 +53,17 @@ const fileComponentSource = {
         return true;
     },
     beginDrag(props) {
-        // console.log("props", props, props.remoteName);
+        console.log("props", props, props.remoteName);
         const {Name, Path, IsDir} = props.item;
         return {
             Name: Name, Path: Path, IsDir: IsDir, remoteName: props.remoteName, remotePath: props.remotePath
         }
     },
+
+
+
+
+
 
     endDrag(props, monitor, component) {
         // console.log("EndDrag", monitor.getDropResult());
@@ -78,6 +84,7 @@ const fileComponentSource = {
     }
 };
 
+
 function collect(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
@@ -85,8 +92,6 @@ function collect(connect, monitor) {
         isDragging: monitor.isDragging()
     }
 }
-
-
 
 /**
  * Main class for individual render of file/directory in the files view.
@@ -119,18 +124,33 @@ class FileComponent extends React.Component {
 		},
 
     * */
+    getInfoItem(props) {
+        return {
+            Name: props.item.Name, Path: props.item.Path, IsDir: props.item.IsDir, remoteName: props.remoteName, remotePath: props.remotePath
+        }
+    }
 
     handleClick(IsDir, clickHandler, e, item) {
         if (IsDir) {
             clickHandler(e, item)
         }
     }
+
+    handleCreateNewMount = (mountFs, mountPoint, vfsOptions, mountOptions) => {
+        console.log("handleCreateNewMount", mountFs, mountPoint, vfsOptions, mountOptions);
+        // console.log("props", this.props);
+        const {addMount} = this.props;
+        console.log(mountFs, mountPoint, vfsOptions, mountOptions);
+        console.log(this.props.addMount);
+        addMount(mountFs, mountPoint, "", vfsOptions, mountOptions);
+    }
+
     render() {
         const {containerID, inViewport, item, loadImages, clickHandler, downloadHandle, linkShareHandle, deleteHandle, connectDragSource, gridMode /*isDragging, remoteName*/} = this.props;
 
         const {IsDir, MimeType, ModTime, Name, Size} = item;
-
-
+        const infoItemRemote = this.getInfoItem(this.props);
+        // console.log(this.getInfoItem(this.props));
         let modTime = new Date(ModTime);
         let element;
         if (gridMode === "card") {
@@ -147,9 +167,12 @@ class FileComponent extends React.Component {
                         </CardBody>
                         <CardFooter>
                             <FileActions downloadHandle={downloadHandle} linkShareHandle={linkShareHandle}
-                                         deleteHandle={deleteHandle} item={item}/>
+                                         deleteHandle={deleteHandle} item={item} getInfoItem={() => infoItemRemote}
+                                         addMount={this.props.addMount}/>
+                            <NewMountModal buttonLabel="Create new mount" okHandle={this.handleCreateNewMount}/>
                         </CardFooter>
                     </Card>
+                    
                 </div>
             )
         } else {
@@ -161,12 +184,14 @@ class FileComponent extends React.Component {
                     <td>{Size === -1 ? "-" : formatBytes(Size, 2)}</td>
                     <td className="d-none d-md-table-cell">{modTime.toLocaleDateString()}</td>
                     <td><FileActions downloadHandle={downloadHandle} linkShareHandle={linkShareHandle}
-                                     deleteHandle={deleteHandle} item={item}/></td>
+                                     deleteHandle={deleteHandle} item={item} getInfoItem={() => infoItemRemote}
+                                     addMount={this.props.addMount}/></td>
                 </tr>
             )
         }
         return <ErrorBoundary>
             {element}
+            <NewMountModal buttonLabel="Create new mount" okHandle={this.handleCreateNewMount}/>
         </ErrorBoundary>;
     }
 }
@@ -225,8 +250,11 @@ FileComponent.propTypes = {
     /**
      * Boolean value to represent if the current remote is bucketbased, the url of a bucket based remote is different.
      */
-    isBucketBased: PropTypes.bool.isRequired
-
+    isBucketBased: PropTypes.bool.isRequired,
+    /**
+     * Function to add a new mount
+     */
+    addMount: PropTypes.func.isRequired,
 };
 
 export default DragSource(ItemTypes.FILECOMPONENT, fileComponentSource, collect)(FileComponent);

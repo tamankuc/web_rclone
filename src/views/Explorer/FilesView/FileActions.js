@@ -3,7 +3,7 @@ import {Button, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledButtonDr
 import * as PropTypes from "prop-types";
 import * as RclonePropTypes from "../../../utils/RclonePropTypes";
 
-function FileActions({downloadHandle, deleteHandle, item, linkShareHandle}) {
+function FileActions({downloadHandle, deleteHandle, item, linkShareHandle, getInfoItem}) {
     const confirmDelete = (deleteHandle, item) => {
         if (window.confirm(`Are you sure you want to delete ${item.Name}`)) {
             deleteHandle(item);
@@ -32,13 +32,20 @@ function FileActions({downloadHandle, deleteHandle, item, linkShareHandle}) {
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem header>Actions</DropdownItem>
-                    <DropdownItem data-test="btn-share-with-link" onClick={() => linkShareHandle(item)}><i
-                        className="fa fa-share fa-lg d-inline"/> Share with link</DropdownItem>
+                    <DropdownItem data-test="btn-mount" onClick={() => console.log(item)}>
+                        <i className="fa fa-hdd-o fa-lg d-inline"/> Mount
+                    </DropdownItem>
+                    <DropdownItem data-test="btn-sync" onClick={() => console.log(getInfoItem())}>
+                        <i className="fa fa-refresh fa-lg d-inline"/> Synchronize
+                    </DropdownItem>
                     <DropdownItem divider/>
-                    <DropdownItem data-test="btn-delete-item" onClick={() => confirmDelete(deleteHandle, item)}><i
-                        className="fa fa-remove fa-lg d-inline text-danger"/> Delete </DropdownItem>
+                    <DropdownItem data-test="btn-delete-item" onClick={() => confirmDelete(deleteHandle, item)}>
+                        <i className="fa fa-remove fa-lg d-inline text-danger"/> Delete
+                    </DropdownItem>
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
+
+
         </div>
     )
 }
@@ -47,8 +54,8 @@ FileActions.propTypes = {
     downloadHandle: PropTypes.func.isRequired,
     deleteHandle: PropTypes.func.isRequired,
     item: RclonePropTypes.PROP_ITEM.isRequired,
-    linkShareHandle: PropTypes.func.isRequired
-
+    linkShareHandle: PropTypes.func.isRequired,
+    getInfoItem: PropTypes.func.isRequired,
 }
 
 export default FileActions;

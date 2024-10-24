@@ -25,7 +25,6 @@ import ErrorBoundary from "../../../ErrorHandling/ErrorBoundary";
 import {createNewPublicLink, deleteFile, purgeDir} from "rclone-api";
 import {createSelector} from "reselect";
 import DropOverlay from "../../Base/DropOverlay/DropOverlay";
-
 /*
 * Start code for react DND
 * */
@@ -117,6 +116,7 @@ class FilesView extends React.PureComponent {
         this.handleFileClick = this.handleFileClick.bind(this);
         this.downloadHandle = this.downloadHandle.bind(this);
         this.deleteHandle = this.deleteHandle.bind(this);
+        console.log("FilesView constructor", this.props);
     }
 
     closeLinkShareModal = () => {
@@ -294,7 +294,8 @@ class FilesView extends React.PureComponent {
                                        linkShareHandle={this.linkShareHandle}
                                        loadImages={loadImages}
                                        isBucketBased={fsInfo.Features.BucketBased}
-                                       canCopy={fsInfo.Features.Copy} canMove={fsInfo.Features.Move} itemIdx={1}>
+                                       canCopy={fsInfo.Features.Copy} canMove={fsInfo.Features.Move} itemIdx={1}
+                                       >
 
                         </FileComponent>
                     );
@@ -527,3 +528,4 @@ export default compose(
     ),
     DropTarget(ItemTypes.FILECOMPONENT, filesTarget, collect)
 )(FilesView)
+
