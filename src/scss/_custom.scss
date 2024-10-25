@@ -2,7 +2,11 @@
 body{
   font-family: Noto Sans, sans-serif;
 }
-
+// .suggestions-container {
+//   max-height: 150px; /* Ограничение высоты */
+//   overflow-y: auto; /* Добавление скроллинга */
+//   border: 1px solid #ccc;
+// }
 .card, .card-header, .card-body {
   border-radius: 0 !important;
 }

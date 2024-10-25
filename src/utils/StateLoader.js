@@ -27,12 +27,22 @@ export class StateLoader {
     saveState(state) {
         const newState = {
             ...state,
-            imageLoader: undefined
+            imageLoader: undefined,
+            remote: {
+                ...state.remote,
+                containers: state.remote.containers,
+                activeRemoteContainerID: state.remote.activeRemoteContainerID,
+                numCols: state.remote.numCols
+            },
+            explorer: {
+                ...state.explorer,
+                currentPaths: state.explorer.currentPaths,
+                backStacks: state.explorer.backStacks
+            }
         };
         try {
             let serializedState = JSON.stringify(newState);
             localStorage.setItem("curState", serializedState);
-
         } catch (err) {
             console.error("Error occurred while saving state");
             throw new Error(`Cannot Save State ${err}`);

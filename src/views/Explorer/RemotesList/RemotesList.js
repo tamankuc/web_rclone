@@ -72,7 +72,8 @@ class RemotesList extends React.Component {
                     
                     <Col xs={12} sm={10} lg={10}>
                         <RemoteListAutoSuggest value={remoteName} onChange={this.shouldUpdateRemoteName}
-                                                suggestions={remotes}/>
+                                                suggestions={remotes}
+                                                />
                     </Col>
                     <Col xs={12} sm={2} lg={2}>
 

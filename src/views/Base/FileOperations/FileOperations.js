@@ -238,7 +238,7 @@ class FileOperations extends React.Component {
 					</UncontrolledTooltip>
 
 					<ButtonDropdown isOpen={dropdownOpen} toggle={this.toggleDropDown} direction={'down'}
-									id="FilterButton">
+									id="FilterButton" >
 						<DropdownToggle className="btn-explorer-action">
 							<i className={"fa fa-lg fa-filter"}/>
 						</DropdownToggle>
@@ -251,7 +251,7 @@ class FileOperations extends React.Component {
 														  onClick={this.handleChangeFilter}>{item}</DropdownItem>)
 								})
 							}
-						</DropdownMenu>
+						</DropdownMenu >
 					</ButtonDropdown>
 
 					<Button className="btn-explorer-action" id="ListViewButton"
