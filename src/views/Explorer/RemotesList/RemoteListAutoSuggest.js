@@ -82,6 +82,11 @@ class RemoteListAutoSuggest extends React.Component {
                 highlightFirstSuggestion={true}
                 inputProps={inputProps}
                 style={{width:"100%"}}
+                renderSuggestionsContainer={({ containerProps, children, query }) => (
+                    <div {...containerProps} style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                      {children}
+                    </div>
+                  )}
             />
         );
     }

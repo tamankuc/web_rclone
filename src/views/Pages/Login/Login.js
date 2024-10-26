@@ -55,9 +55,10 @@ class Login extends Component {
             ipAddress = window.location.href.split("?")[0];
         // if (localStorage.getItem(IP_ADDRESS_KEY))
         //     ipAddress = localStorage.getItem(IP_ADDRESS_KEY);
+        ipAddress = ipAddress.replace("3000", "5572");
         this.state = {
-            username: "",
-            password: "",
+            username: "user",
+            password: "pass",
             ipAddress,
             error: ""
         };

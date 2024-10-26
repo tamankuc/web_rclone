@@ -1,19 +1,14 @@
 import Autosuggest from 'react-autosuggest';
 import React from "react";
-import {findFromConfig} from "../../../utils/Tools";
+import { config } from './config';  // Import the config directly
 
 // Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = (config, value) => {
+const getSuggestions = (value) => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
-    if (inputLength === 0) {
-        return config;
-
-    }
-
-    return inputLength === 0 ? [] : config.filter(lang =>
-        lang.Description.toLowerCase().slice(0, inputLength) === inputValue
+    return inputLength === 0 ? config : config.filter(provider =>
+        provider.Description.toLowerCase().slice(0, inputLength) === inputValue
     );
 };
 
@@ -49,7 +44,7 @@ class ProviderAutoSuggest extends React.Component {
     onSuggestionsFetchRequested = ({value}) => {
         // console.log(value);
         this.setState({
-            suggestions: getSuggestions(this.props.suggestions, value)
+            suggestions: getSuggestions(value)
         });
     };
 
@@ -62,8 +57,8 @@ class ProviderAutoSuggest extends React.Component {
 
 
     render() {
-        const {value, onChange, suggestions} = this.props;
-        const currentConfig = findFromConfig(suggestions, value);
+        const { value, onChange } = this.props;
+        const currentConfig = config.find(provider => provider.Prefix === value);
         let renderVal = "";
         if (currentConfig === undefined) {
             renderVal = value;
@@ -89,6 +84,15 @@ class ProviderAutoSuggest extends React.Component {
                 alwaysRenderSuggestions={true}
                 highlightFirstSuggestion={true}
                 inputProps={inputProps}
+                // theme={{
+                //     suggestionsList: 'suggestions-list', // Поддержка стандартных стилей
+                //     suggestionHighlighted: 'suggestion-highlighted' // Подсветка активного элемента
+                //   }}
+                  renderSuggestionsContainer={({ containerProps, children, query }) => (
+                    <div {...containerProps} style={{ maxHeight: '100px', overflowY: 'auto' }}>
+                      {children}
+                    </div>
+                  )}
             />
         );
     }
