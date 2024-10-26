@@ -390,23 +390,24 @@ class FilesView extends React.PureComponent {
                                         onClick={() => this.applySortFilter("modified")}>Modified {sortFilter === "modified" &&
                                     <i className={filterIconClass}/>}</th>
                                     <th>Actions</th>
+                                    <th>Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {files.length > 0 ? (
                                         <React.Fragment>
                                             <tr>
-                                                <th colSpan={4}>Directories</th>
+                                                <th colSpan={5}>Directories</th>
                                             </tr>
                                             {dirComponentMap}
                                             <tr>
-                                                <th colSpan={4}>Files</th>
+                                                <th colSpan={5}>Files</th>
                                             </tr>
                                             {fileComponentMap}
                                         </React.Fragment>
                                     ) :
                                     <tr>
-                                        <th colSpan={4}>Files</th>
+                                        <th colSpan={5}>Files</th>
                                     </tr>
                                 }
                                 </tbody>
@@ -528,4 +529,3 @@ export default compose(
     ),
     DropTarget(ItemTypes.FILECOMPONENT, filesTarget, collect)
 )(FilesView)
-

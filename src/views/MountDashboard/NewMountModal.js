@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Button,
     Col,
@@ -13,7 +13,7 @@ import {
     Row
 } from 'reactstrap';
 import RemotesList from "../Explorer/RemotesList";
-import * as PropTypes from "prop-types"
+import * as PropTypes from "prop-types";
 import {mountOptions, vfsOptions} from "../../utils/MountOptions";
 import {isEmpty, validateDuration, validateInt, validateSizeSuffix} from "../../utils/Tools";
 
@@ -96,16 +96,15 @@ const NewMountModal = (props) => {
     const {
         buttonLabel,
         className,
-        okHandle
-
+        okHandle,
+        isOpen,
+        toggle,
+        defaultMountFs
     } = props;
 
     const [modal, setModal] = useState(false);
-
-    const [mountFs, setMountFs] = useState("");
-
+    const [mountFs, setMountFs] = useState(defaultMountFs || "");
     const [mountPoint, setMountPoint] = useState("");
-
     const [formErrors, setFormErrors] = useState((() => {
         const output = {};
         for(const opt in vfsOptions) {
@@ -129,30 +128,30 @@ const NewMountModal = (props) => {
     })());
 
     const [vfsOptionsValues, setVfsOptionsValues] = useState({});
-
     const [mountOptionsValues, setMountOptionsValues] = useState({});
 
-    const toggle = () => setModal(!modal);
+    // Используем внешнее или внутреннее состояние модального окна
+    const isModalOpen = isOpen !== undefined ? isOpen : modal;
+    const toggleModal = toggle || (() => setModal(!modal));
+
+    // Обновляем mountFs при изменении defaultMountFs
+    useEffect(() => {
+        if (defaultMountFs) {
+            setMountFs(defaultMountFs);
+        }
+    }, [defaultMountFs]);
 
     const handleCreateMount = () => {
         if (!okHandle) {
             throw new Error("Ok handle is null");
         }
-
         okHandle(mountFs, mountPoint, vfsOptionsValues, mountOptionsValues);
-    }
+        toggleModal();
+    };
 
     const isCreateDisabled = () => {
         return !mountFs || !mountPoint;
-    }
-
-    /**
-     * Handle init change and set appropriate errors.
-     * @param e
-     * @param option
-     * @param formValues
-     * @param setFormValues
-     */
+    };
     const handleInputChange = (e, option, formValues, setFormValues) => {
 
         let inputName = e.target.name;
@@ -204,14 +203,18 @@ const NewMountModal = (props) => {
         });
     };
 
+    const openButton = isOpen === undefined ? (
+        <Button color="primary" onClick={toggleModal}>{buttonLabel}</Button>
+    ) : null;
+
     return (
         <div data-test="newMountModalComponent">
-            <Button color="primary" onClick={toggle}>{buttonLabel}</Button>
-            <Modal isOpen={modal} toggle={toggle} className={className}>
-                <ModalHeader toggle={toggle}>New Mount</ModalHeader>
+            {openButton}
+            <Modal isOpen={isModalOpen} toggle={toggleModal} className="modal-lg">
+                <ModalHeader toggle={toggleModal}>New Mount</ModalHeader>
                 <ModalBody>
                     <FormGroup row>
-                        <Label for={"mountFs"} sm={5}>Fs</Label>
+                        <Label for={"mountFs"} sm={4}>Fs</Label>
                         <Col sm={7}>
                             <RemotesList
                                 remoteName={mountFs}
@@ -226,10 +229,8 @@ const NewMountModal = (props) => {
                             <Input type={"text"} value={mountPoint}
                                    name={"mountPoint"}
                                    id={"mountPoint"} onChange={e => setMountPoint(e.target.value)} required={true}>
-
                             </Input>
                             <FormFeedback/>
-
                         </Col>
                     </FormGroup>}
 
@@ -258,31 +259,24 @@ const NewMountModal = (props) => {
                             />
                         </Col>
                     </Row>
-
                 </ModalBody>
                 <ModalFooter>
                     <Button data-test="ok-button" color="primary" onClick={handleCreateMount}
                             disabled={isCreateDisabled()}>Create</Button>{' '}
-                    <Button data-test="cancel-button" color="secondary" onClick={toggle}>Cancel</Button>
+                    <Button data-test="cancel-button" color="secondary" onClick={toggleModal}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         </div>
     );
-}
+};
 
 NewMountModal.propTypes = {
-    /**
-     * Text for open modal button
-     */
     buttonLabel: PropTypes.string,
-    /**
-     * Class for open modal button
-     */
     buttonClass: PropTypes.string,
-    /**
-     * Function to be called when ok button is clicked.
-     */
     okHandle: PropTypes.func.isRequired,
-}
+    isOpen: PropTypes.bool,
+    toggle: PropTypes.func,
+    defaultMountFs: PropTypes.string
+};
 
 export default NewMountModal;
