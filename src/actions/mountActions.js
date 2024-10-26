@@ -23,7 +23,7 @@ export const getMountList = () => {
 };
 
 export const addMount = (fs, mountPoint, mountType, vfsOpt = {}, mountOpt = {}) => {
-    const normalizedFs = fs.endsWith(":") ? fs : `${fs}:`;
+    const normalizedFs = fs.endsWith(":") ? fs : `${fs}`;
     
     // Убедимся, что опции всегда являются объектами
     const normalizedVfsOpt = typeof vfsOpt === 'object' && vfsOpt !== null ? vfsOpt : {};

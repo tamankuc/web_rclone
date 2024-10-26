@@ -9,7 +9,6 @@ import {
 	Form,
 	Input,
 	InputGroup,
-	InputGroupAddon,
 	InputGroupText,
 	Row,
 	UncontrolledAlert
@@ -183,32 +182,32 @@ class Login extends Component {
 											<p className="text-muted">Sign In to your account</p>
 											{error && <UncontrolledAlert color="danger" children={error}/>}
 											<InputGroup className="mb-3">
-												<InputGroupAddon addonType="prepend">
+												<InputGroupText addonType="prepend">
 													<InputGroupText>
 														<i className="icon-user"/>
 													</InputGroupText>
-												</InputGroupAddon>
+												</InputGroupText>
 												<Input type="text" placeholder="IP Address / URL"
 													   autoComplete="ipAddress"
 													   onChange={this.changeIPAddress} value={ipAddress}
 													   data-testid="LoginForm-ipAddress"/>
                                             </InputGroup>
                                             <InputGroup className="mb-3">
-                                                <InputGroupAddon addonType="prepend">
+                                                <InputGroupText addonType="prepend">
                                                     <InputGroupText>
 														<i className="icon-user"/>
                                                     </InputGroupText>
-                                                </InputGroupAddon>
+                                                </InputGroupText>
                                                 <Input type="text" placeholder="Username" autoComplete="username"
                                                        data-testid="LoginForm-userName"
                                                        onChange={this.changeUserName} value={username}/>
                                             </InputGroup>
                                             <InputGroup className="mb-4">
-                                                <InputGroupAddon addonType="prepend">
+                                                <InputGroupText addonType="prepend">
                                                     <InputGroupText>
 														<i className="icon-lock"/>
                                                     </InputGroupText>
-                                                </InputGroupAddon>
+                                                </InputGroupText>
                                                 <Input type="password" placeholder="Password"
                                                        data-testid="LoginForm-password"
                                                        autoComplete="current-password" onChange={this.changePassword}

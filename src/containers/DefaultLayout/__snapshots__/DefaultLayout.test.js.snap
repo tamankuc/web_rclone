@@ -290,7 +290,7 @@ exports[`Remote Explorer renders should match snapshot 1`] = `
                 path="/mountDashboard"
                 render={[Function]}
               />
-              <Redirect
+              <Navigate
                 from="/"
                 to="/dashboard"
               />

@@ -60,7 +60,7 @@ exports[`Login Layout renders should match snapshot 1`] = `
                   className="mb-3"
                   tag="div"
                 >
-                  <InputGroupAddon
+                  <InputGroupText
                     addonType="prepend"
                     tag="div"
                   >
@@ -71,7 +71,7 @@ exports[`Login Layout renders should match snapshot 1`] = `
                         className="icon-user"
                       />
                     </InputGroupText>
-                  </InputGroupAddon>
+                  </InputGroupText>
                   <Input
                     autoComplete="ipAddress"
                     data-testid="LoginForm-ipAddress"
@@ -85,7 +85,7 @@ exports[`Login Layout renders should match snapshot 1`] = `
                   className="mb-3"
                   tag="div"
                 >
-                  <InputGroupAddon
+                  <InputGroupText
                     addonType="prepend"
                     tag="div"
                   >
@@ -96,7 +96,7 @@ exports[`Login Layout renders should match snapshot 1`] = `
                         className="icon-user"
                       />
                     </InputGroupText>
-                  </InputGroupAddon>
+                  </InputGroupText>
                   <Input
                     autoComplete="username"
                     data-testid="LoginForm-userName"
@@ -110,7 +110,7 @@ exports[`Login Layout renders should match snapshot 1`] = `
                   className="mb-4"
                   tag="div"
                 >
-                  <InputGroupAddon
+                  <InputGroupText
                     addonType="prepend"
                     tag="div"
                   >
@@ -121,7 +121,7 @@ exports[`Login Layout renders should match snapshot 1`] = `
                         className="icon-lock"
                       />
                     </InputGroupText>
-                  </InputGroupAddon>
+                  </InputGroupText>
                   <Input
                     autoComplete="current-password"
                     data-testid="LoginForm-password"

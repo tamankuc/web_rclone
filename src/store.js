@@ -1,5 +1,5 @@
 import {applyMiddleware, compose, createStore} from "redux";
-import thunk from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 import rootReducer from './reducers';
 import {StateLoader} from "./utils/StateLoader";
 import throttledMiddleware from './throttled';

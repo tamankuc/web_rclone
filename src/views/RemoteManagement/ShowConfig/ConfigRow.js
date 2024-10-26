@@ -3,7 +3,7 @@ import axiosInstance from "../../../utils/API/API";
 import {Button} from "reactstrap";
 import * as  PropTypes from "prop-types";
 import {toast} from "react-toastify";
-import {withRouter} from "react-router-dom";
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import urls from "../../../utils/API/endpoint";
 
 
@@ -74,7 +74,14 @@ const propTypes = {
     remoteName: PropTypes.string.isRequired,
 
 };
-
+function withRouter(Component) {
+    return function ComponentWithRouterProp(props) {
+      const navigate = useNavigate();
+      const location = useLocation();
+      const params = useParams();
+      return <Component {...props} router={{ location, navigate, params }} />;
+    };
+  }
 ConfigRow.propTypes = propTypes;
 
 export default withRouter(ConfigRow);
